@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 
 def LoadData(filepath):
     df = pd.read_csv(filepath)
@@ -12,7 +13,9 @@ def LoadData(filepath):
     print('--------------------------------')
     print(df.head())
     print('--------------------------------')
+    print(f"Dataset type :{df.dtypes}")
     return df
+
 def Data_prep(df,target):
     print(f" how many mising value each column in the dataset have?\n{df.isnull().sum()}")
     print("Duplicate rows:", df.duplicated().sum())
@@ -43,7 +46,15 @@ def dataSplite(X,y,testSize,randomState):
         stratify = y
     )
     return X_train,X_test,y_train,y_test
+def scaled_Data(X,y,testSize,randomState):
+    X_train,X_test,y_train,y_test = dataSplite(X,y,testSize,randomState)
+    scaler = StandardScaler()
+    X_train = scaler.fit_transform(X_train)
+    X_test = scaler.transform(X_test)
+    return X_train,X_test,y_train,y_test
+
+
 
 # df = LoadData('G:/AI_Course/mini-project-01/data/creditcard.csv')
 # X,y = Data_prep(df,'class')
-# X_train,X_test,y_train,y_test = dataSplite(X,y,0.2,42)
+# X_train,X_test,y_train,y_test = scaled_Data(X,y,0.2,42)
