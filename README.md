@@ -19,8 +19,10 @@ there were zero missing values across the dataset
 there are 1081 duplicate rows in the dataset witch were removed
 
 ## 3. Initial Hypothesis
-
-since we have unbalanced dataset as said before I think that decission Tree Classifier can have a really good ability to predict the fraud transactions. KNN clasifier can be the best next model.
+for these  two reasons below I think that  decission Tree Classifier can have a really good ability to predict the fraud transactions. 
+1 - we have unbalanced dataset and the labels are seperated into two classes: 0 and 1
+2- I believe the relation between features and label are nonlinear
+KNN clasifier can be the best next model. 
 
 ## 4. Model Comparison
 
