@@ -26,11 +26,26 @@ KNN clasifier can be the best next model.
 
 ## 4. Model Comparison
 
-Include:
 
-* Models
-* Metrics
-* Cross-validation results
+* Models and Metrics with Cross-validation results
+
+0         1               2            3         4  \
+0                Model  accuracy  Mean Precision  Mean Recall   Mean F1   
+1  Logistic Regression  0.999169        0.857424     0.587042  0.695177   
+2                  KNN   0.99951        0.923021     0.763717  0.833982   
+3        Decision Tree  0.999086        0.717067     0.731063  0.722624   
+
+              5                       6                       7  
+0  Mean roc_auc  Mean average_precision  Mean balanced_accuracy  
+1      0.974604                0.720886                0.793441  
+2      0.907522                0.771939                0.881805  
+3      0.865292                0.523955                0.865292
+
+*False Negative costs componies money so in this project and dataset to find fraudukant transactions, we use Recall and F1 to choose the best model. we can also use roc_auc because of our unblanced data.* 
+*ROC curve reflects the test's ability to distinguish *between fraud and normal transaction. AUC values range from 0.5 to 1.0, *with a value of 0.5 indicating that the test is no better than chance at *distinguishing between fraudulant and normal transaction*
+*combining Recall,F1 and roc_auc together as metrics to chose the best model I think that KNN is the best model among these 3 models use for detecting fradulant transactions* 
+
+
 
 ## 5. Scaling Experiment
 
@@ -66,8 +81,10 @@ Before training your models, write your hypotheses in `README.md`.
 ### Guiding Questions
 
 1. Which model do you expect to perform best for fraud detection? Why?
+Decision Tree : I though this Desision Tree can model unblanced dataset and it can model nonlinearity better.
 
 2. Which metric is more important for this problem: Precision, Recall, or F1-score? Why?
+Recall because it is important that we don't miss any Fradulant transation since it cost companie money but we also want to have good precision meaning that we need to have high TP count so we wouldn't be in trouble for checking False positive since F1 has FN and Tp both so F1 and recall are both important 
 
 3. What do you expect to happen if the model predicts all transactions as legitimate?
 
