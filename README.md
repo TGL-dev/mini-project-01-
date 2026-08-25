@@ -10,12 +10,10 @@ This dataset presents transactions that occurred in two days, where there is 492
 
 ## 2. Data Analysis
 
-Include:
-
 * Dataset statistics
 There are 284807 raw Samples in this dataset 
 * Feature information
-this dataset contains 30 feature including Time , Amount of transaction and 28 other features (V1,V2,...V28). the origin of these 28 features(V1 ... V28) is not specified because of the security reasons.
+this dataset contains 30 feature including Time , Amount of transaction and 28 other features (V1,V2,...V28). the origin of these 28 features(V1 ... V28) is not specified because of the security reasons. since all these features were float there was no need to seprate sting and numberic data and change the string feature into numberic values.
 * Missing value analysis
 there were zero missing values across the dataset
 there are 1081 duplicate rows in the dataset witch were removed
