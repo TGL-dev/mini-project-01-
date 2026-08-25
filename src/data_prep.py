@@ -13,7 +13,7 @@ def LoadData(filepath):
     print(df.head())
     print('--------------------------------')
     return df
-def preprossesing(df,target):
+def Data_prep(df,target):
     print(f" how many mising value each column in the dataset have?\n{df.isnull().sum()}")
     print("Duplicate rows:", df.duplicated().sum())
     df_cleaned = df.drop_duplicates(keep=False)
@@ -34,3 +34,16 @@ def preprossesing(df,target):
     plt.tight_layout()
     plt.show()
     return X,y
+def dataSplite(X,y,testSize,randomState):
+    X_train, X_test, y_train, y_test = train_test_split(
+        X,
+        y,
+        test_size = testSize,
+        random_state = randomState,
+        stratify = y
+    )
+    return X_train,X_test,y_train,y_test
+
+# df = LoadData('G:/AI_Course/mini-project-01/data/creditcard.csv')
+# X,y = Data_prep(df,'class')
+# X_train,X_test,y_train,y_test = dataSplite(X,y,0.2,42)
