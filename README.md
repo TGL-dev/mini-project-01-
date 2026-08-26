@@ -1,4 +1,4 @@
-
+Introduction 
 * Business scenario
 credit card companies must be able to recognize fraudulent credit card transactions so that customers would'nt be charged for items they did not purchase. After all, customers will not be willing to provide their credit card details unless they are assured regarding the security of their information and the detection of financial transactions not initiated by them.
 * Objective
@@ -29,35 +29,58 @@ KNN clasifier can be the best next model.
 
 * Models and Metrics with Cross-validation results
 
-0         1               2            3         4  \
-0                Model  accuracy  Mean Precision  Mean Recall   Mean F1   
-1  Logistic Regression  0.999169        0.857424     0.587042  0.695177   
-2                  KNN   0.99951        0.923021     0.763717  0.833982   
-3        Decision Tree  0.999086        0.717067     0.731063  0.722624   
+| Model               |     Accuracy |    Precision |       Recall |           F1 |
+| :------------------ | -----------: | -----------: | -----------: | -----------: |
+| Logistic Regression |     0.999169 |     0.857424 |     0.587042 |     0.695177 |
+| *KNN*               |   0.999510   |   0.923021   |   0.763717   |   0.833982   |
+| Decision Tree       |     0.999086 |     0.717067 |     0.731063 |     0.722624 |
 
-              5                       6                       7  
-0  Mean roc_auc  Mean average_precision  Mean balanced_accuracy  
-1      0.974604                0.720886                0.793441  
-2      0.907522                0.771939                0.881805  
-3      0.865292                0.523955                0.865292
+| Model               |      ROC-AUC | Average Precision | Balanced Accuracy |
+| :------------------ | -----------: | ----------------: | ----------------: |
+| Logistic Regression |   0.974604   |          0.720886 |          0.793441 |
+| *KNN*               |     0.907522 |      0.771939     |        0.881805   |
+| Decision Tree       |     0.865292 |          0.523955 |          0.865292 |
+
+
 
 *False Negative costs componies money so in this project and dataset to find fraudukant transactions, we use Recall and F1 to choose the best model. we can also use roc_auc because of our unblanced data.* 
 *ROC curve reflects the test's ability to distinguish *between fraud and normal transaction. AUC values range from 0.5 to 1.0, *with a value of 0.5 indicating that the test is no better than chance at *distinguishing between fraudulant and normal transaction*
 *combining Recall,F1 and roc_auc together as metrics to chose the best model I think that KNN is the best model among these 3 models use for detecting fradulant transactions* 
 
-
-
 ## 5. Scaling Experiment
 
 Explain the effect of scaling.
 
-## 6. Hyperparameter Experiment
+6. Hyperparameter Experiment
 
-Explain the impact of parameter changes.
+Max_depth Hyperparameter for Decision Tree
+
+| max_depth   |Train Precision  |CV Test Precision | Train Recall |CV Test Recall|Train F1  |CV Test F1|
+|:-----------:|----------------:|-----------------:|-------------:|-------------:|---------:|------:|
+| 2           | 0.839           | 0.815            | 0.716        | 0.698        | 0.772    | 0.750 |
+| *5*         | 0.951           | 0.903            | 0.792        | 0.731        | 0.864    | 0.806 |
+| 10          | 1.000           | 0.848            | 0.850        | 0.709        | 0.919    | 0.772 |
+| None        | 1.000           | 0.724            | 1.000        | 0.742        | 1.000    | 0.732 |
+
+`n_neighbors`  Hyperparameter for KNN
+
+| `n_neighbors` | Test Precision | Train Precision | Test Recall | Train Recall | Test F1 | Train F1 |
+|:-------------:|---------------:|----------------:|------------:|-------------:|--------:|---------:|
+| 1             | 0.850397       | 1.000000        | 0.771751    | 1.000000     | 0.806235| 1.000000 |
+| 5             | 0.923021       | 0.940874        | 0.763717    | 0.777180     | 0.833982| 0.851119 |
+| 20            | 0.874053       | 0.877078        | 0.714661    | 0.722133     | 0.785680| 0.791954 |
+
+as you can see somwhere between max_depth 0f 5 and 1  overfitting has occured! 
+so here the best hyperparameter for decision Tree is : n_neighbors = 5 
+
+
+### Decision Tree — max_depth
+
+
 
 ## 7. Final Model Selection
 
-Explain why your final model was selected.
+
 
 ## 8. Running Instructions
 
@@ -87,23 +110,26 @@ Decision Tree : I though this Desision Tree can model unblanced dataset and it c
 Recall because it is important that we don't miss any Fradulant transation since it cost companie money but we also want to have good precision meaning that we need to have high TP count so we wouldn't be in trouble for checking False positive since F1 has FN and Tp both so F1 and recall are both important 
 
 3. What do you expect to happen if the model predicts all transactions as legitimate?
+the model is too simple and is unable to find the connection between features and target 
 
 4. Do you expect feature scaling to significantly affect KNN performance?
+yes. since distance between the point we are at in KNN and diffrent features it will have significant 
+impact on the output since diffrent features are in diffrent ِNumerical Range.  features in higher number range have lower effect on the output than those with lower number range .
 
 5. Do you expect the Decision Tree to overfit? Why?
+if max_depth is not limited or the number of leaf , yes overfitting can happen!
 
-### Example Hypothesis
-
-> I expect Logistic Regression to provide a strong baseline because the problem is binary classification. However, I expect the Decision Tree to capture nonlinear relationships that Logistic Regression may miss.
-
-> I expect Recall to be particularly important because failing to detect a fraudulent transaction can have a significant cost. However, maximizing Recall alone may produce too many false alarms, so Precision and F1-score should also be considered.
 
 ### After Training Analysis
 
 Explain in your `README.md`:
 
-- Was your initial hypothesis correct?
-- Which model performed best?
-- Which metric was most informative?
-- How did class imbalance affect the results?
-- What was the trade-off between False Positives and False Negatives?
+Was your initial hypothesis correct? 
+No!
+Which model performed best?
+KNN
+Which metric was most informative?
+f1 and recall
+How did class imbalance affect the results?
+
+What was the trade-off between False Positives and False Negatives?
