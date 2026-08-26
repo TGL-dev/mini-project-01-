@@ -15,7 +15,6 @@ from sklearn.metrics import (
 
 logistic_pipeline = Pipeline([("scaler", StandardScaler()),("model", LogisticRegression())])
 knn_pipeline = Pipeline([("scaler", StandardScaler()),("model", KNeighborsClassifier())])
-
 # def initialize_Scaled_data(testSize,randomState):
 #     here = Path(__file__).resolve()
 #     repo_root = here.parent.parent
@@ -31,10 +30,8 @@ def initialize_data(testSize,randomState):
     X_train,X_test,y_train,y_test = dataSplite(X,y,testSize,randomState)
     return X_train,X_test,y_train,y_test
 
-
 testSize = 0.2
 randomState = 42
-
 
 X_train,X_test,y_train,y_test = initialize_data(testSize,randomState)
 LogisticR = Pipeline([
@@ -91,24 +88,62 @@ for name, model in models.items():
 Report_results = pd.DataFrame(Report_results)
 print(Report_results)
 
- ############################
+ ####### Gride Search #######
 
- ####### Gride Search
-
+models = {
+    "KNN": Knn,
+    "Decision Tree": DecisionTree
+}
 param_grids = {
-    "Logistic Regression": {
-        'max_iter' : [100,1000,5000,10000]
-    },
     "KNN": {
-        "k": [1, 5 ,20]
+        'model__n_neighbors': [1, 5 ,20]
     },
     "Decision Tree": {
-        "max_depth": [2, 5, 10, None]
+        'max_depth': [2, 5, 10, None]
     }
 }
-    # grid.fit(X_train, y_train)
+grid_results = {}
+all_results = []
+for name, model in models.items():
+    grid = GridSearchCV(
+        estimator=model,
+        param_grid=param_grids[name],
+        cv=skf,
+        scoring=scoring,
+        n_jobs=-1,
+        refit='f1',  
+        return_train_score=True
+    )
+    grid.fit(X_train, y_train)
+    grid_results[name] = grid
+    grid_results[name] = grid
+    results = pd.DataFrame(grid.cv_results_)
+    results["model"] = name
+    all_results.append(results)
+    print(name)
+    print("Best Parameters:")
+    print(grid.best_params_)
+    print("Best CV F1:")
+    print(grid.best_score_)
+all_results_df = pd.concat(
+    all_results,
+    ignore_index=True
+)
+report = all_results_df[
+    [
+        "model",
+        "params",
+        "mean_train_precision",
+        "mean_test_precision",
+        "mean_train_recall",
+        "mean_test_recall",
+        "mean_train_f1",
+        "mean_test_f1"
+    ]
+].copy()
+print("Report result :")
+print(report)
 
-    # Report_results[name] = grid
 
     
 
