@@ -45,6 +45,15 @@ def initialize_model(randomState):
     }
     return models
 
+def initialize_modelWithoutScaling(randomState):
+    LogisticR = LogisticRegression(max_iter=10000)
+    Knn = KNeighborsClassifier(n_neighbors=5)
+    models = {
+    "Logistic Regression": LogisticR,
+    "KNN": Knn,
+    }
+    return models
+
 def CrossValidation(X_train,y_train,skf,models,scorings):
     Report_results = {'0':['Model'],
                     '1' :['accuracy'] ,
@@ -54,7 +63,9 @@ def CrossValidation(X_train,y_train,skf,models,scorings):
                     '5' :['Mean roc_auc'],
                     '6' :['Mean average_precision'],
                     '7' :['Mean balanced_accuracy']}
-    metrics = ['Mean accuracy','Mean Precision','Mean Recall','Mean F1','Mean roc_auc','Mean average_precision','Mean balanced_accuracy']
+    metrics = ['Mean accuracy','Mean Precision',
+               'Mean Recall','Mean F1','Mean roc_auc',
+               'Mean average_precision','Mean balanced_accuracy']
     for name, model in models.items():
         Cross_validation_Result = cross_validate(
             model,
@@ -132,66 +143,68 @@ def SaveModel(grid_results,path):
         savingPath
     )
 
+if __name__ == "__main__":
 
-testSize = 0.2
-randomState = 42
+    testSize = 0.2
+    randomState = 42
+    X_train,X_test,y_train,y_test = initialize_data(testSize,randomState)
+    skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 
-X_train,X_test,y_train,y_test = initialize_data(testSize,randomState)
+    scorings =  {
+                "accuracy" : "accuracy",
+                "precision" : "precision",
+                "recall" : "recall",
+                "f1" : "f1",
+                "roc_auc": "roc_auc",
+                "average_precision": "average_precision",
+                "balanced_accuracy": "balanced_accuracy"
+            }
+    models = initialize_model(randomState)
+    ####### Cross Validation with scaling #####
 
-skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+    Report_results = CrossValidation(X_train,y_train,skf,models,scorings)
+    print(Report_results)
 
-scorings =  {
-            "accuracy" : "accuracy",
-            "precision" : "precision",
-            "recall" : "recall",
-            "f1" : "f1",
-            "roc_auc": "roc_auc",
-            "average_precision": "average_precision",
-            "balanced_accuracy": "balanced_accuracy"
+    ####### Gride Search #######
+
+    param_grids = {
+
+        "KNN": {
+            'model__n_neighbors': [1, 5 ,20]
+        },
+        "Decision Tree": {
+            'max_depth': [2, 5, 10, None]
         }
-metrics = ['Mean accuracy','Mean Precision','Mean Recall','Mean F1','Mean roc_auc','Mean average_precision','Mean balanced_accuracy']
-
-models = initialize_model(randomState)
-Report_results = CrossValidation(X_train,y_train,skf,models,scorings)
-print(Report_results)
-
- ####### Gride Search #######
-
-param_grids = {
-
-    "KNN": {
-        'model__n_neighbors': [1, 5 ,20]
-    },
-    "Decision Tree": {
-        'max_depth': [2, 5, 10, None]
     }
-}
-models_gridSearch = {
-    "KNN": models["KNN"],
-    "Decision Tree": models["Decision Tree"]
-}
+    models_gridSearch = {
+        "KNN": models["KNN"],
+        "Decision Tree": models["Decision Tree"]
+    }
 
-report , grid_results = GridSearch(X_train,y_train,skf,models_gridSearch,scorings,param_grids)
-print("Report result :")
-print(report)
+    report , grid_results = GridSearch(X_train,y_train,skf,models_gridSearch,scorings,param_grids)
+    print("Report result :")
+    print(report)
 
-best_model = grid_results['KNN'].best_estimator_
-print('Best hyperparameter for KNN model is ')
-print(best_model)
+    best_model = grid_results['KNN'].best_estimator_
+    print('Best hyperparameter for KNN model is ')
+    print(best_model)
 
-best_model = grid_results['Decision Tree'].best_estimator_
-print('Best hyperparameter for KNN model is ')
-print(best_model)
+    best_model = grid_results['Decision Tree'].best_estimator_
+    print('Best hyperparameter for KNN model is ')
+    print(best_model)
 
-############## saving Models 
-path = 'G:/AI_Course/mini-project-01/models'
-SaveModel(grid_results,path)
+    ############## saving Models 
+    path = 'G:/AI_Course/mini-project-01/models'
+    SaveModel(grid_results,path)
 
-
-# joblib.dump(
-#     best_model,
-#     "models/best_model.pkl"
-# )   
+    ############## Cross validation without scaling
+    model_withoutScale = initialize_modelWithoutScaling(randomState)
+    Report_results = CrossValidation(X_train,y_train,skf,model_withoutScale,scorings)
+    print(Report_results)
+    # joblib.dump(
+    #     best_model,
+    #     "models/best_model.pkl"
+    # )   
 
 
 
