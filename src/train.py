@@ -14,8 +14,6 @@ from sklearn.metrics import (
     precision_score,confusion_matrix)
 
 
-logistic_pipeline = Pipeline([("scaler", StandardScaler()),("model", LogisticRegression())])
-knn_pipeline = Pipeline([("scaler", StandardScaler()),("model", KNeighborsClassifier())])
 # def initialize_Scaled_data(testSize,randomState):
 #     here = Path(__file__).resolve()
 #     repo_root = here.parent.parent
@@ -37,7 +35,7 @@ def initialize_model(randomState):
      ("model", LogisticRegression(max_iter=10000))
      ])
     Knn = Pipeline([
-    ("KNNClasifier",StandardScaler()),
+    ("scaler",StandardScaler()),
     ("model",KNeighborsClassifier(n_neighbors=5))])
     DecisionTree = DecisionTreeClassifier(random_state = randomState)
     models = {
@@ -69,7 +67,7 @@ def CrossValidation(X_train,y_train,skf,models,scorings):
 
         Report_results['0'].append(name)
         i = 1
-        for metric in scorings.key():
+        for metric in scorings.keys():
             mean_score = Cross_validation_Result[f'test_{metric}'].mean()
             Report_results[str(i)].append(mean_score)
             i = i+1
@@ -78,15 +76,10 @@ def CrossValidation(X_train,y_train,skf,models,scorings):
     # print(Report_results)
     return Report_results
 
-def GridSearch(X_train,y_train,skf,models,scorings):
+def GridSearch(X_train,y_train,skf,models,scorings,param_grids):
     grid_results = {}
     all_results = []
-    initialize_model(randomState)
-    modelss = {
-    "KNN": models['kNN'],
-    "Decision Tree": models['Decision Tree']
-    }
-    for name, model in modelss.items():
+    for name, model in models.items():
         grid = GridSearchCV(
             estimator=model,
             param_grid=param_grids[name],
@@ -125,6 +118,21 @@ def GridSearch(X_train,y_train,skf,models,scorings):
     ].copy()
     return report,grid_results
 
+def SaveModel(grid_results,path):
+    best_model = grid_results['KNN'].best_estimator_
+    savingPath = Path(path)/ "KNN.pkl"
+    joblib.dump(
+        best_model,
+        savingPath
+    )
+    best_model = grid_results['Decision Tree'].best_estimator_
+    savingPath = Path(path)/ "DecisionTree.pkl"
+    joblib.dump(
+        best_model,
+        savingPath
+    )
+
+
 testSize = 0.2
 randomState = 42
 
@@ -150,6 +158,7 @@ print(Report_results)
  ####### Gride Search #######
 
 param_grids = {
+
     "KNN": {
         'model__n_neighbors': [1, 5 ,20]
     },
@@ -157,8 +166,12 @@ param_grids = {
         'max_depth': [2, 5, 10, None]
     }
 }
+models_gridSearch = {
+    "KNN": models["KNN"],
+    "Decision Tree": models["Decision Tree"]
+}
 
-report , grid_results = GridSearch(X_train,y_train,skf,models,scorings)
+report , grid_results = GridSearch(X_train,y_train,skf,models_gridSearch,scorings,param_grids)
 print("Report result :")
 print(report)
 
@@ -169,6 +182,10 @@ print(best_model)
 best_model = grid_results['Decision Tree'].best_estimator_
 print('Best hyperparameter for KNN model is ')
 print(best_model)
+
+############## saving Models 
+path = 'G:/AI_Course/mini-project-01/models'
+SaveModel(grid_results,path)
 
 
 # joblib.dump(
