@@ -1,4 +1,4 @@
-Introduction 
+## 1. Introduction 
 * Business scenario
 credit card companies must be able to recognize fraudulent credit card transactions so that customers would'nt be charged for items they did not purchase. After all, customers will not be willing to provide their credit card details unless they are assured regarding the security of their information and the detection of financial transactions not initiated by them.
 * Objective
@@ -53,7 +53,7 @@ Explain the effect of scaling.
 
 6. Hyperparameter Experiment
 
-Max_depth Hyperparameter for Decision Tree
+`Max_depth` Hyperparameter for Decision Tree
 
 | max_depth   |Train Precision  |CV Test Precision | Train Recall |CV Test Recall|Train F1  |CV Test F1|
 |:-----------:|----------------:|-----------------:|-------------:|-------------:|---------:|------:|
@@ -62,20 +62,64 @@ Max_depth Hyperparameter for Decision Tree
 | 10          | 1.000           | 0.848            | 0.850        | 0.709        | 0.919    | 0.772 |
 | None        | 1.000           | 0.724            | 1.000        | 0.742        | 1.000    | 0.732 |
 
+as you can see somwhere between max_depth 0f 5 and 10  overfitting has occured! 
+so here the best hyperparameter for decision Tree is :max_depth = 5 
+
 `n_neighbors`  Hyperparameter for KNN
 
-| `n_neighbors` | Test Precision | Train Precision | Test Recall | Train Recall | Test F1 | Train F1 |
+| `n_neighbors` |CVTest Precision| Train Precision |CVTest Recall| Train Recall |CVTest F1| Train F1 |
 |:-------------:|---------------:|----------------:|------------:|-------------:|--------:|---------:|
 | 1             | 0.850397       | 1.000000        | 0.771751    | 1.000000     | 0.806235| 1.000000 |
 | 5             | 0.923021       | 0.940874        | 0.763717    | 0.777180     | 0.833982| 0.851119 |
 | 20            | 0.874053       | 0.877078        | 0.714661    | 0.722133     | 0.785680| 0.791954 |
 
 as you can see somwhere between max_depth 0f 5 and 1  overfitting has occured! 
-so here the best hyperparameter for decision Tree is : n_neighbors = 5 
+so here the best hyperparameter for KNN is : n_neighbors = 5 
+
+# 10. Mandatory Experiment 1: Effect of Scaling
+
+results for KNN :
+
+| Model | Scaling           | Precision | Recall    | F1        |
+|-------|-------------------|-----------|-----------|-----------|
+| KNN   | Without Scaling   |    0.6    | 0.010885  | 0.021333  |
+| KNN   | With Scaling      | 0.923021  | 0.763717  | 0.833982  | 
 
 
-### Decision Tree — max_depth
+# Explaining:
+using KNN without scaling the data coused drastic change in recall and F1 and made the model useless making it unable to predict the real results!
 
+- Why is KNN sensitive to scaling? KNN uses distance to find neighbors.feature with bigge scale will effect more on KNN calculation process. features with small scale will be almost ignored due to their short distance as neghbors.
+- Why is Decision Tree less sensitive? Decision Tree doesn't use distance in it's process. it uses one feature at a time to proceed its training so other features and their scale won't matter.
+
+---
+
+## 12. Impact of Classification Threshold
+
+Most classification models use a default decision threshold of 0.5.
+
+```thresholds
+0.3
+0.5
+0.7
+```
+chosen model for this experiment was KNN
+
+| Threshold | Precision | Recall | F1 |
+| --------: | --------: | -----: | -: |
+|       0.3 |           |        |    |
+|       0.5 |           |        |    |
+|       0.7 |           |        |    |
+
+
+			
+
+Explain:
+
+- What happens to Recall when the threshold decreases?
+- What happens to Precision?
+- Which threshold would you recommend for a fraud detection system?
+- What trade-off does your chosen threshold create?
 
 
 ## 7. Final Model Selection
