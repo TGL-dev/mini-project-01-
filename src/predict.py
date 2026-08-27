@@ -13,11 +13,7 @@ from pathlib import Path
 
 def LoadTestData(path):
 
-    test_data = pd.read_json(
-        path,
-        orient="records"
-    )
-
+    test_data = pd.read_csv(path)
     X_test = test_data.drop(columns=["class"])
     y_test = test_data["class"]
     return X_test, y_test
