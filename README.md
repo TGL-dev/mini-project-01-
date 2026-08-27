@@ -48,10 +48,25 @@ KNN clasifier can be the best next model.
 *combining Recall,F1 and roc_auc together as metrics to chose the best model I think that KNN is the best model among these 3 models use for detecting fradulant transactions* 
 
 ## 5. Scaling Experiment
+# Mandatory Experiment 1: Effect of Scaling
 
-Explain the effect of scaling.
+results for KNN :
 
-6. Hyperparameter Experiment
+| Model | Scaling           | Precision | Recall    | F1        |
+|-------|-------------------|-----------|-----------|-----------|
+| KNN   | Without Scaling   |    0.6    | 0.010885  | 0.021333  |
+| KNN   | With Scaling      | 0.923021  | 0.763717  | 0.833982  | 
+
+
+# Explaining:
+using KNN without scaling the data coused drastic change in recall and F1 and made the model useless making it unable to predict the real results!
+
+- Why is KNN sensitive to scaling? KNN uses distance to find neighbors.feature with bigge scale will effect more on KNN calculation process. features with small scale will be almost ignored due to their short distance as neghbors.
+- Why is Decision Tree less sensitive? Decision Tree doesn't use distance in it's process. it uses one feature at a time to proceed its training so other features and their scale won't matter.
+
+---
+
+## 6. Hyperparameter Experiment
 
 `Max_depth` Hyperparameter for Decision Tree
 
@@ -76,23 +91,6 @@ so here the best hyperparameter for decision Tree is :max_depth = 5
 as you can see somwhere between max_depth 0f 5 and 1  overfitting has occured! 
 so here the best hyperparameter for KNN is : n_neighbors = 5 
 
-# 10. Mandatory Experiment 1: Effect of Scaling
-
-results for KNN :
-
-| Model | Scaling           | Precision | Recall    | F1        |
-|-------|-------------------|-----------|-----------|-----------|
-| KNN   | Without Scaling   |    0.6    | 0.010885  | 0.021333  |
-| KNN   | With Scaling      | 0.923021  | 0.763717  | 0.833982  | 
-
-
-# Explaining:
-using KNN without scaling the data coused drastic change in recall and F1 and made the model useless making it unable to predict the real results!
-
-- Why is KNN sensitive to scaling? KNN uses distance to find neighbors.feature with bigge scale will effect more on KNN calculation process. features with small scale will be almost ignored due to their short distance as neghbors.
-- Why is Decision Tree less sensitive? Decision Tree doesn't use distance in it's process. it uses one feature at a time to proceed its training so other features and their scale won't matter.
-
----
 
 ## 12. Impact of Classification Threshold
 
