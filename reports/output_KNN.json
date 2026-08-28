@@ -19932,10 +19932,10 @@
         "status": "success"
     },
     {
-        "prediction": "Normal",
-        "class_id": 0,
+        "prediction": "Fraud",
+        "class_id": 1,
         "probability": 0.4,
-        "status": "failed"
+        "status": "success"
     },
     {
         "prediction": "Normal",
@@ -40164,10 +40164,10 @@
         "status": "success"
     },
     {
-        "prediction": "Normal",
-        "class_id": 0,
+        "prediction": "Fraud",
+        "class_id": 1,
         "probability": 0.4,
-        "status": "success"
+        "status": "failed"
     },
     {
         "prediction": "Normal",
@@ -82890,10 +82890,10 @@
         "status": "success"
     },
     {
-        "prediction": "Normal",
-        "class_id": 0,
+        "prediction": "Fraud",
+        "class_id": 1,
         "probability": 0.4,
-        "status": "failed"
+        "status": "success"
     },
     {
         "prediction": "Normal",
@@ -122346,10 +122346,10 @@
         "status": "success"
     },
     {
-        "prediction": "Normal",
-        "class_id": 0,
+        "prediction": "Fraud",
+        "class_id": 1,
         "probability": 0.4,
-        "status": "success"
+        "status": "failed"
     },
     {
         "prediction": "Normal",
@@ -147900,10 +147900,10 @@
         "status": "success"
     },
     {
-        "prediction": "Normal",
-        "class_id": 0,
+        "prediction": "Fraud",
+        "class_id": 1,
         "probability": 0.4,
-        "status": "failed"
+        "status": "success"
     },
     {
         "prediction": "Normal",
@@ -236232,10 +236232,10 @@
         "status": "success"
     },
     {
-        "prediction": "Normal",
-        "class_id": 0,
+        "prediction": "Fraud",
+        "class_id": 1,
         "probability": 0.4,
-        "status": "success"
+        "status": "failed"
     },
     {
         "prediction": "Normal",
@@ -323472,10 +323472,10 @@
         "status": "success"
     },
     {
-        "prediction": "Normal",
-        "class_id": 0,
+        "prediction": "Fraud",
+        "class_id": 1,
         "probability": 0.4,
-        "status": "failed"
+        "status": "success"
     },
     {
         "prediction": "Normal",
