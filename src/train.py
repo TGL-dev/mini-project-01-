@@ -29,16 +29,22 @@ def initialize_data(testSize,randomState):
     X_train,X_test,y_train,y_test = dataSplite(X,y,testSize,randomState)
     return X_train,X_test,y_train,y_test
 
-def SaveTestData(X_test, y_test, path):
-
+def SaveTestDatacsv(X_test, y_test, path):
+    path = Path(path)
+    path.mkdir(parents=True, exist_ok=True)
     test_data = X_test.copy()
     test_data["class"] = y_test.values
     savePath = Path(path)/ "Test_data.csv"
-    test_data.to_json(
-        savePath ,
-        orient="records",
-        indent=4
-    )
+    test_data.to_csv(savePath,index=False)
+    print("saved the test data successfully!")
+
+def SaveTestData(X_test, y_test, path):
+    path = Path(path)
+    path.mkdir(parents=True, exist_ok=True)
+    test_data = X_test.copy()
+    test_data["class"] = y_test
+    savePath = Path(path)/ "Test_data.json"
+    test_data.to_json(savePath,orient="records",indent=4)
     print("saved the test data successfully!")
 
 def initialize_model(randomState):
@@ -288,6 +294,8 @@ if __name__ == "__main__":
     ############## saving Models 
     path = 'G:/AI_Course/mini-project-01/models'
     SaveModel(grid_results,path)
+
+
 
     ############## Cross validation without scaling
     model_withoutScale = initialize_modelWithoutScaling(randomState)
