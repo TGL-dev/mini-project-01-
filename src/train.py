@@ -29,6 +29,18 @@ def initialize_data(testSize,randomState):
     X_train,X_test,y_train,y_test = dataSplite(X,y,testSize,randomState)
     return X_train,X_test,y_train,y_test
 
+def SaveTestData(X_test, y_test, path):
+
+    test_data = X_test.copy()
+    test_data["class"] = y_test.values
+    savePath = Path(path)/ "Test_data.csv"
+    test_data.to_json(
+        savePath ,
+        orient="records",
+        indent=4
+    )
+    print("saved the test data successfully!")
+
 def initialize_model(randomState):
     LogisticR = Pipeline([
         ("scaler", StandardScaler()),
@@ -46,11 +58,9 @@ def initialize_model(randomState):
     return models
 
 def initialize_modelWithoutScaling(randomState):
-    LogisticR = LogisticRegression(max_iter=10000)
     Knn = KNeighborsClassifier(n_neighbors=5)
     models = {
-    "Logistic Regression": LogisticR,
-    "KNN": Knn,
+    "KNN": Knn
     }
     return models
 
@@ -143,11 +153,93 @@ def SaveModel(grid_results,path):
         savingPath
     )
 
+def ThresholdCrossValidation(X_train, y_train, skf):
+
+    thresholds = [0.3,0.5, 0.7]
+    results = []
+
+    for threshold in thresholds:
+
+        def threshold_predict(model, X):
+            y_probability = model.predict_proba(X)[:, 1]
+            return (y_probability >= threshold).astype(int)
+
+        def precision_threshold(model, X, y):
+            y_pred = threshold_predict(model, X)
+            return precision_score(y, y_pred)
+
+        def recall_threshold(model, X, y):
+            y_pred = threshold_predict(model, X)
+            return recall_score(y, y_pred)
+
+        def f1_threshold(model, X, y):
+            y_pred = threshold_predict(model, X)
+            return f1_score(y, y_pred)
+
+        def tn_threshold(model, X, y):
+            y_pred = threshold_predict(model, X)
+            tn, fp, fn, tp = confusion_matrix(y, y_pred).ravel()
+            return tn
+
+        def fp_threshold(model, X, y):
+            y_pred = threshold_predict(model, X)
+            tn, fp, fn, tp = confusion_matrix(y, y_pred).ravel()
+            return fp
+
+        def fn_threshold(model, X, y):
+            y_pred = threshold_predict(model, X)
+            tn, fp, fn, tp = confusion_matrix(y, y_pred).ravel()
+            return fn
+
+        def tp_threshold(model, X, y):
+            y_pred = threshold_predict(model, X)
+            tn, fp, fn, tp = confusion_matrix(y, y_pred).ravel()
+            return tp
+
+        scoring = {
+            "precision": precision_threshold,
+            "recall": recall_threshold,
+            "f1": f1_threshold,
+            "TN": tn_threshold,
+            "FP": fp_threshold,
+            "FN": fn_threshold,
+            "TP": tp_threshold
+        }
+
+        model = Pipeline([
+            ("scaler", StandardScaler()),
+            ("model", KNeighborsClassifier(n_neighbors=5))
+        ])
+
+        cv_result = cross_validate(
+            model,
+            X_train,
+            y_train,
+            cv=skf,
+            scoring=scoring,
+            return_train_score=True
+        )
+
+        results.append({
+            "Threshold": threshold,
+            "Precision": cv_result["test_precision"].mean(),
+            "Recall": cv_result["test_recall"].mean(),
+            "F1": cv_result["test_f1"].mean(),
+            "TN": cv_result["test_TN"].mean(),
+            "FP": cv_result["test_FP"].mean(),
+            "FN": cv_result["test_FN"].mean(),
+            "TP": cv_result["test_TP"].mean()
+        })
+
+    return pd.DataFrame(results)
+
 if __name__ == "__main__":
 
     testSize = 0.2
     randomState = 42
+    savepath = "G:/AI_Course/mini-project-01/data"
     X_train,X_test,y_train,y_test = initialize_data(testSize,randomState)
+    SaveTestData(X_test, y_test, savepath)
     skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 
     scorings =  {
@@ -201,6 +293,11 @@ if __name__ == "__main__":
     model_withoutScale = initialize_modelWithoutScaling(randomState)
     Report_results = CrossValidation(X_train,y_train,skf,model_withoutScale,scorings)
     print(Report_results)
+
+    ############## Experiment for diffrent thresholds 
+    threshold_results = ThresholdCrossValidation(X_train,y_train,skf)
+    print("Threshold Cross Validation Results:")
+    print(threshold_results)
     # joblib.dump(
     #     best_model,
     #     "models/best_model.pkl"
