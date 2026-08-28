@@ -103,22 +103,20 @@ Most classification models use a default decision threshold of 0.5.
 ```
 chosen model for this experiment was KNN
 
-| Threshold | Precision | Recall | F1 |
-| --------: | --------: | -----: | -: |
-|       0.3 |           |        |    |
-|       0.5 |           |        |    |
-|       0.7 |           |        |    |
-
-
-			
-
-Explain:
+| Threshold | Precision | Recall   | F1       | TN      | FP  | FN   | TP   |
+|----------:|----------:|----------|----------|---------|-----|------|------|
+| 0.3       | 0.899458  | 0.790892 | 0.839777 | 45192.2 | 6.6 | 15.4 | 58.2 |
+| 0.5       | 0.923021  | 0.763717 | 0.833982 | 45194.0 | 4.8 | 17.4 | 56.2 |
+| 0.7       | 0.944812  | 0.679341 | 0.789502 | 45195.8 | 3.0 | 23.6 | 50.0 |
 
 - What happens to Recall when the threshold decreases?
+Recall decreases because less transactions are classified as fraud also we have less fals positive as the thershold increases
 - What happens to Precision?
+precision increases but looking at the TP and FP you see both of them were decreasing so we can't say that because the precision got better we have a better model.
 - Which threshold would you recommend for a fraud detection system?
+thereshold = 0.3
 - What trade-off does your chosen threshold create?
-
+with the threshold of 0.3 the model can detect more fraud but for more false positive meaning it will catch more normal transaton as fraud too but the price is indurable indeed!
 
 ## 7. Final Model Selection
 
@@ -163,8 +161,6 @@ if max_depth is not limited or the number of leaf , yes overfitting can happen!
 
 
 ### After Training Analysis
-
-Explain in your `README.md`:
 
 Was your initial hypothesis correct? 
 No!
