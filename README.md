@@ -127,6 +127,18 @@ I have chosen KNN with 5 n_neghbor as the best model for this dataset I have als
 | Decision Tree | 0.999541 | 0.782609 | 0.923077 | 56493 | 6  | 20 | 72 |
 
 the results are so close! it seems that decision Tree can predict fraud and normal better with less false positive and false negetive!
+since I used threshold = 0.5 for KNN i think that the prediction could have been better if I used threshold = 0.3.
+I will update the result for threshold = 0.3 !
+
+update!
+| Model         | Accuracy | Recall   | Precision | TN    | FP  | FN | TP |
+|:--------------|----------|----------|-----------|-------|-----|---:|---:|
+| KNN           | 0.999487 | 0.815217 | 0.862068  | 56487 | 12  | 17 | 75 |
+| Decision Tree | 0.999540 | 0.782608 | 0.923076  | 56493 | 6   | 20 | 72 |
+
+As you can see KNN with threshold of 0.3 catched more TP with less FN making it better than decision Tree model in camparison!
+
+
 
 ### Guiding Questions
 

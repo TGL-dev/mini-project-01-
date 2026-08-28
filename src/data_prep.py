@@ -29,13 +29,14 @@ def Data_prep(df,target):
     print(y.value_counts())     # Target 0 and 1 count
     print("class 0 and 1's distrbution is as below :(percent)")
     print(y.value_counts(normalize=True)*100)   # Target 0 and 1 percentage
+    print('--------------------------------------')
     df_cleaned.describe()
-    fig, axs = plt.subplots(len(df_cleaned.columns), 1, figsize=(7, 18), dpi=95)
-    for i, col in enumerate(df_cleaned.columns):
-        axs[i].boxplot(df_cleaned[col], vert=False)
-        axs[i].set_ylabel(col)
-    plt.tight_layout()
-    plt.show()
+    # fig, axs = plt.subplots(len(df_cleaned.columns), 1, figsize=(7, 18), dpi=95)
+    # for i, col in enumerate(df_cleaned.columns):
+    #     axs[i].boxplot(df_cleaned[col], vert=False)
+    #     axs[i].set_ylabel(col)
+    # plt.tight_layout()
+    # plt.show()
     return X,y
 def dataSplite(X,y,testSize,randomState):
     X_train, X_test, y_train, y_test = train_test_split(
