@@ -92,7 +92,7 @@ as you can see somwhere between max_depth 0f 5 and 1  overfitting has occured!
 so here the best hyperparameter for KNN is : n_neighbors = 5 
 
 
-## 12. Impact of Classification Threshold
+## 7. Impact of Classification Threshold
 
 Most classification models use a default decision threshold of 0.5.
 
@@ -118,28 +118,15 @@ thereshold = 0.3
 - What trade-off does your chosen threshold create?
 with the threshold of 0.3 the model can detect more fraud but for more false positive meaning it will catch more normal transaton as fraud too but the price is indurable indeed!
 
-## 7. Final Model Selection
+## 8. Final Model Selection
+I have chosen KNN with 5 n_neghbor as the best model for this dataset I have also saved the decision tree model with haperparameter of max_depth = 5 to compare the results on test data.the results are described below:
 
+| Model         | Accuracy | Recall   | Precision| TN    | FP | FN | TP |
+|:--------------|----------|----------|----------|-------|---:|---:|---:|
+| KNN           | 0.999470 | 0.771739 | 0.887500 | 56490 | 9  | 21 | 71 |
+| Decision Tree | 0.999541 | 0.782609 | 0.923077 | 56493 | 6  | 20 | 72 |
 
-
-## 8. Running Instructions
-
-Explain:
-
-* Installation
-* Training
-* Prediction
-
-## 9. Reflection
-
-Answer the questions below.
-
----
-
-
-# 7. Hypothesis Before Modeling
-
-Before training your models, write your hypotheses in `README.md`.
+the results are so close! it seems that decision Tree can predict fraud and normal better with less false positive and false negetive!
 
 ### Guiding Questions
 
