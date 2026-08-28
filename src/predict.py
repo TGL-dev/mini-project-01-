@@ -4,22 +4,35 @@ import joblib
 import json
 from pathlib import Path
 from sklearn.metrics import accuracy_score,confusion_matrix,recall_score,precision_score
-import pandas as pd
-import joblib
-import json
+from data_prep import LoadData, Data_prep, dataSplite,scaled_Data
+from sklearn.preprocessing import StandardScaler
 
-from pathlib import Path
+# def initialize_data(testSize,randomState):
+#     here = Path(__file__).resolve()
+#     repo_root = here.parent.parent
+#     df = LoadData(repo_root / "data" / "creditcard.csv")  
+#     X,y = Data_prep (df,'class')
+#     X_train,X_test,y_train,y_test = dataSplite(X,y,testSize,randomState)
+#     return X_train,X_test,y_train,y_test
 
-
-def LoadTestData(path):
-
+def LoadTestDatacsv(path):
     test_data = pd.read_csv(path)
     X_test = test_data.drop(columns=["class"])
     y_test = test_data["class"]
     return X_test, y_test
 
-def load_models(path):
+def LoadTestData(path):
 
+    test_data = pd.read_json(
+        path,
+        orient="records"
+    )
+    X_test = test_data.drop(columns=["class"])
+    y_test = test_data["class"]
+
+    return X_test, y_test
+
+def load_models(path):
     modelPath = Path(path)
     models = {
         "KNN": joblib.load(modelPath /"KNN.pkl"),
@@ -52,6 +65,7 @@ def PredictModels(models, X_test, y_test, path):
         print("Confusion Matrix:")
         print("------------------------------------------------------")
         print(cm)
+
         results = []
         for prediction, probability ,actual in zip (predictions,probabilities,y_test):
             if prediction == 1:
@@ -80,5 +94,7 @@ if __name__ == "__main__":
     models = load_models(model_path)
     outputPath = "G:/AI_Course/mini-project-01/reports"
     PredictModels(models,X_test,y_test,outputPath)
+
+
 
 
